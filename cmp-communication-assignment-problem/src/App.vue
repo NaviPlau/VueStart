@@ -1,45 +1,35 @@
 <template>
-  <header><h1>My friends</h1></header>
-  <new-friend @add-friend="addFriend"></new-friend>
-  <ul >
-    <friend-contact v-for="friend in friends" :key="friend.id" :friend="friend" @toggle-favourite="toggleFavourite" @delete-friend="deleteFriend"></friend-contact>
-  </ul>
+  <div class="wrapper">
+    <active-user :users="users"></active-user>
+    <user-data @save-data="saveData"></user-data>
+  </div>
+
 </template>
 
 <script>
+import ActiveUser from './components/ActiveUser.vue'
+import UserData from './components/UserData.vue'
 export default {
+  components: {
+    ActiveUser,
+    UserData
+  },
+  
   data() {
     return {
-      friends : [
-        {id: 'manuel', name: 'Manuel Lorenz', phone: '0123 45678 90', email: '4Kt5o@example.com', isFavourite: true},
-        {id: 'julie', name: 'Julie Jones', phone: '0987 65432 10', email: '4Kt5o@example.com', isFavourite: false}
-      ]
+      users: [],
     }
   },
   methods: {
-    toggleFavourite(friendId) {
-      const identifiedFriend = this.friends.find(friend => friend.id === friendId)
-      identifiedFriend.isFavourite = !identifiedFriend.isFavourite
-    },
-    addFriend(name, phone, email) {
-      this.friends.push({
-        id: new Date().toISOString(),
+    saveData(name, age) {
+      this.users.push({
         name: name,
-        phone: phone,
-        email: email,
-        isFavourite: false
+        age: age
       })
-    },
-
-    deleteFriend(friendId) {
-      this.friends = this.friends.filter(friend => friend.id !== friendId)
     }
-
   }
 }
-
 </script>
-
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
@@ -71,17 +61,23 @@ header {
   margin: 0;
   padding: 0;
   list-style: none;
+  width: 100%;
 }
 
 #app li ,
 #app form {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  margin: 1rem auto;
+  margin: 1rem 0;
   border-radius: 10px;
   padding: 1rem;
   text-align: center;
   width: 90%;
   max-width: 40rem;
+}
+
+#app li{
+  width: 100%;
+  max-width: unset;
 }
 
 #app h2 {
@@ -122,4 +118,25 @@ header {
   margin: 1rem 0;
 }
 
+.wrapper{
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.left-side{
+  width: 50%;
+}
+
+h2{
+  text-align: center;
+}
+
+
+form{
+  margin: 0;
+  max-height: 200px;
+  position: sticky;
+  top: 48px;
+}
 </style>
